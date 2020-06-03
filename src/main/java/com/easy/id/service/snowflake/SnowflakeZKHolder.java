@@ -115,7 +115,7 @@ public class SnowflakeZKHolder {
             // Map<localAddress,path>
             Map<String, String> localAddressPathMap = new HashMap<>(16);
             for (String key : client.getChildren().forPath(ZK_PATH)) {
-                final String[] split = key.split("-");
+                final String[] split = key.split(SPLIT);
                 localAddressPathMap.put(split[0], key);
                 // value=zk有序结点的需要
                 localAddressWorkerIdMap.put(split[0], Integer.valueOf(split[1]));
@@ -170,7 +170,7 @@ public class SnowflakeZKHolder {
     }
 
     private void scheduledUploadTimeToZK(CuratorFramework client, String localZKPath) {
-        scheduledExecutorService.schedule(() -> {
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
             // 如果时针回调了就不同步
             if (System.currentTimeMillis() < lastUpdateAt) {
                 return;
@@ -182,7 +182,7 @@ public class SnowflakeZKHolder {
             } catch (Exception e) {
                 log.error("update init data error path is {} error is {}", localZKPath, e);
             }
-        }, 5, TimeUnit.SECONDS);
+        }, 2, 5, TimeUnit.SECONDS);
     }
 
     private Integer loadWorkerIdFromFile() {
@@ -235,7 +235,7 @@ public class SnowflakeZKHolder {
                 .connectString(zkConnectionString)
                 .retryPolicy(new RetryUntilElapsed((int) TimeUnit.SECONDS.toMillis(5), (int) TimeUnit.SECONDS.toMillis(1)))
                 .connectionTimeoutMs((int) TimeUnit.SECONDS.toMillis(10))
-                .sessionTimeoutMs((int) TimeUnit.SECONDS.toMillis(6))
+                .sessionTimeoutMs((int) TimeUnit.SECONDS.toMillis(10))
                 .build();
     }
 

@@ -9,5 +9,5 @@ public interface IdGenerator {
 
     Long nextId();
 
-    Set<Long> nextIds(int patchSize);
+    Set<Long> nextIds(int batchSize);
 }

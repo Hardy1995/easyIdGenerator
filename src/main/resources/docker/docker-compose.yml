@@ -26,3 +26,16 @@ services:
     volumes:
       - './db2/mysql:/etc/mysql/conf.d'
       - './db2/mysql/data:/var/lib/mysql'
+  easy_id_generator_zk:
+    image: 'zookeeper:3.4.14'
+    restart: 'always'
+    hostname: 'easy_id_generator_z1'
+    container_name: 'easy_id_generator_z1'
+    ports:
+      - '2181:2181'
+    environment:
+      ZOO_MY_ID: '1'
+    volumes:
+      - './easy_id_generator_z1/cfg:/conf'
+      - './easy_id_generator_z1/data:/data'
+      - './easy_id_generator_z1/datalog:/datalog'

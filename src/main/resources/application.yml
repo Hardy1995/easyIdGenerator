@@ -5,7 +5,7 @@ easy-id-generator:
   snowflake:
     enable: true
     zk:
-      connection-string: 127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183
+      connection-string: 127.0.0.1:2181          # ip:port,ip2:prort
     load-worker-id-from-file-when-zk-down: true  # 当zk不可访问时，从本地文件中读取之前备份的workerId
   segment:
     enable: false
